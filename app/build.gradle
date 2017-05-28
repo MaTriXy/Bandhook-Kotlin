@@ -44,32 +44,45 @@ android {
         exclude 'META-INF/LICENSE'
         exclude 'META-INF/NOTICE'
     }
+}
 
-    sourceSets {
-        main.java.srcDirs += 'src/main/kotlin'
-        androidTest.java.srcDirs += 'src/androidTest/kotlin'
-    }
-
-    dexOptions {
-        incremental true
-        preDexLibraries = false
-        jumboMode = false
-        javaMaxHeapSize "4g"
-    }
+// Required for annotation processing plugins like Dagger
+kapt {
+    generateStubs = true
 }
 
 dependencies {
-    compile project (":data")
-    compile project (":presentation")
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    compile "com.android.support:appcompat-v7:$supportVersion"
+    compile "com.android.support:recyclerview-v7:$supportVersion"
+    compile "com.android.support:cardview-v7:$supportVersion"
+    compile "com.android.support:palette-v7:$supportVersion"
+    compile "com.android.support:design:$supportVersion"
+    compile "de.greenrobot:eventbus:2.4.1"
+    compile "com.squareup.picasso:picasso:2.5.2"
+    compile "com.squareup.okhttp3:okhttp:$okhttpVersion"
+    compile "com.squareup.okhttp3:logging-interceptor:$okhttpVersion"
+    compile ("com.squareup.retrofit2:retrofit:$retrofitVersion"){
+        // exclude Retrofit’s OkHttp peer-dependency module and define your own module import
+        exclude module: 'okhttp'
+    }
+    compile "com.squareup.retrofit2:converter-gson:$retrofitVersion"
+    compile "com.birbit:android-priority-jobqueue:2.0.1"
+    compile "org.jetbrains.anko:anko-sdk15:$ankoVersion"
+    compile "org.jetbrains.anko:anko-support-v4:$ankoVersion"
+    compile "org.jetbrains.anko:anko-appcompat-v7:$ankoVersion"
+    compile "org.jetbrains.anko:anko-design:$ankoVersion"
+    compile "org.jetbrains.anko:anko-cardview-v7:$ankoVersion"
+    compile "org.jetbrains.anko:anko-recyclerview-v7:$ankoVersion"
+    kapt "com.google.dagger:dagger-compiler:$daggerVersion"
+    compile "com.google.dagger:dagger:$daggerVersion"
 
-    compile parent.ext.libKotlin
-    compile parent.ext.libAppCompat
-    compile parent.ext.libRecyclerView
-    compile parent.ext.libPalette
-    compile parent.ext.libEventBus
-    compile parent.ext.libPicasso
-    compile parent.ext.libJobQueue
+    androidTestCompile "org.mockito:mockito-core:1.10.19"
+    androidTestCompile "com.google.dexmaker:dexmaker:1.2"
+    androidTestCompile "com.google.dexmaker:dexmaker-mockito:1.2"
+    androidTestCompile "com.android.support:support-annotations:$supportVersion"
+    androidTestCompile "com.android.support.test.espresso:espresso-core:2.2.2"
 
-    androidTestCompile parent.ext.libEspresso
-    androidTestCompile parent.ext.libTestingSupport
+    testCompile "junit:junit:4.12"
+    testCompile "org.mockito:mockito-core:2.7.13"
 }
