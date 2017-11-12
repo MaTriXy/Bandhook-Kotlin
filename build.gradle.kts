@@ -1,3 +1,8 @@
+import org.gradle.kotlin.dsl.extra
+import org.gradle.kotlin.dsl.getValue
+import org.gradle.kotlin.dsl.setValue
+import org.gradle.kotlin.dsl.repositories
+
 /*
  * Copyright (C) 2015 Antonio Leiva
  *
@@ -14,22 +19,23 @@
  * limitations under the License.
  */
 
-package com.antonioleiva.bandhookkotlin.ui.util
+buildscript {
 
-import android.os.Build
+    val config = ProjectConfiguration()
 
-inline fun supportsKitKat(code: () -> Unit) {
-    supportsVersion(code, 19)
-}
-
-inline fun supportsLollipop(code: () -> Unit) {
-    if (Build.VERSION.SDK_INT >= 21) {
-        code.invoke()
+    repositories {
+        jcenter()
+        google()
+    }
+    dependencies {
+        classpath(config.buildPlugins.androidGradle)
+        classpath(config.buildPlugins.kotlinGradlePlugin)
     }
 }
 
-inline fun supportsVersion(code: () -> Unit, sdk: Int) {
-    if (Build.VERSION.SDK_INT >= sdk) {
-        code.invoke()
+allprojects {
+    repositories {
+        jcenter()
+        google()
     }
 }
